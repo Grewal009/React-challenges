@@ -1,0 +1,58 @@
+import { useState } from "react";
+import { sculptureList } from "./data.js";
+
+export default function Gallery() {
+  const [index, setIndex] = useState(0);
+  const [showMore, setShowMore] = useState(false);
+  const [dis, setDis] = useState(false);
+  const [disp, setDisp] = useState(true);
+
+  function handleNextClick() {
+    if (index === sculptureList.length - 2) {
+      setIndex(index + 1);
+      setDis(true);
+    } else {
+      setIndex(index + 1);
+      setDisp(false);
+    }
+  }
+
+  function handlePreviousClick() {
+    if (index === 1) {
+      setIndex(index - 1);
+      setDisp(true);
+    } else {
+      setIndex(index - 1);
+      setDis(false);
+    }
+  }
+
+  function handleMoreClick() {
+    setShowMore(!showMore);
+  }
+
+  let sculpture = sculptureList[index];
+  return (
+    <>
+      <button disabled={disp} onClick={handlePreviousClick}>
+        Previous
+      </button>
+
+      <button disabled={dis} onClick={handleNextClick}>
+        Next
+      </button>
+      <h2>
+        <i>{sculpture.name} </i>
+        by {sculpture.artist}
+      </h2>
+      <h3>
+        ({index + 1} of {sculptureList.length})
+      </h3>
+      <button onClick={handleMoreClick}>
+        {showMore ? "Hide" : "Show"} details
+      </button>
+      {showMore && <p>{sculpture.description}</p>}
+      <img src={sculpture.url} alt={sculpture.alt} />
+    </>
+  );
+}
